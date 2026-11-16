@@ -319,13 +319,13 @@ function renderHistory(){
     const avgD=Math.round(recs.reduce((s,r)=>s+r.demand,0)/n);
     const avgP=Math.round(recs.reduce((s,r)=>s+r.chicken+r.mutton,0)/n);
     const peak=Math.max(...recs.map(r=>r.demand));
-    card.innerHTML=`<div class="chart-box-title"><strong style="color:#1a1a1a;">${sess}</strong> · ${n} sessions · Avg demand ${avgD} KG · Avg production ${avgP} KG · Peak demand ${peak} KG</div><div class="chart-wrap" style="height:240px;"><canvas id="hc-${i}"></canvas></div>`;
+    card.innerHTML=`<div class="chart-box-title"><strong style="color:#1a1a1a;">${sess}</strong> · ${n} sessions · Avg demand ${avgD} KG · Avg production ${avgP} KG · Peak demand ${peak} KG</div><div style="overflow-x:auto;"><div style="position:relative;height:240px;width:${n>24?n*30+'px':'100%'};"><canvas id="hc-${i}"></canvas></div></div>`;
     box.appendChild(card);
 
     const labels=recs.map(r=>[SHORT[r.dow],r.date.toLocaleDateString('en-IN',longSpan?{day:'numeric',month:'short',year:'2-digit'}:{day:'numeric',month:'short'})]);
     const prod=recs.map(r=>r.chicken+r.mutton);
     const dem=recs.map(r=>r.demand);
-    const asLine=n>24;
+    const asLine=false;
     charts['hc-'+i]=new Chart(document.getElementById('hc-'+i),{
       type:asLine?'line':'bar',
       data:{labels,datasets:[
