@@ -5,100 +5,117 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font-sans,sans-serif);background:transparent;color:var(--color-text-primary);font-size:14px;}
-.wrap{padding:.5rem 0 2rem;}
-.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px;}
-.shop-name{font-size:17px;font-weight:500;}
-.shop-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem;}
-.kpi{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.85rem 1rem;}
-.kpi-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;}
+body{font-family:sans-serif;background:#f7f7f5;color:#1a1a1a;font-size:14px;}
+.page{max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-left img{height:50px;width:50px;border-radius:50%;object-fit:contain;background:#fff;border:1px solid #eee;flex-shrink:0;}
+.title{font-size:18px;font-weight:600;}
+.subtitle{font-size:12px;color:#888;margin-top:2px;}
+.refresh-btn{font-size:12px;padding:5px 14px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;}
+.refresh-btn:hover{background:#f0f0ee;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.5rem;}
+.kpi{background:#fff;border-radius:8px;padding:.85rem 1rem;border:1px solid #eee;}
+.kpi-label{font-size:11px;color:#888;margin-bottom:4px;}
 .kpi-val{font-size:22px;font-weight:500;}
-.kpi-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px;}
+.kpi-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.sec-title{font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.85rem;}
 .section{margin-bottom:1.75rem;}
-.sec-title{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.85rem;}
 .day-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;}
-.day-tab{font-size:12px;padding:4px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;}
-.day-tab.active{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);}
+.day-tab{font-size:12px;padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#888;cursor:pointer;}
+.day-tab.active{background:#f0f0ee;color:#1a1a1a;border-color:#bbb;}
 .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:500px){.chart-row{grid-template-columns:1fr;}}
-.chart-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.85rem;}
-.chart-box-title{font-size:12px;color:var(--color-text-secondary);margin-bottom:.5rem;}
+.chart-box{background:#fff;border:1px solid #eee;border-radius:8px;padding:.85rem;}
+.chart-box-title{font-size:12px;color:#888;margin-bottom:.5rem;}
 .chart-wrap{position:relative;height:200px;}
 .pred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
-.pred-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.9rem;}
-.pred-day{font-size:10px;color:var(--color-text-tertiary);margin-bottom:2px;}
+.pred-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:.9rem;}
+.pred-day{font-size:10px;color:#aaa;margin-bottom:2px;}
 .pred-session{font-size:13px;font-weight:500;margin-bottom:6px;}
 .pred-val{font-size:28px;font-weight:600;color:#1D9E75;}
-.pred-unit{font-size:12px;color:var(--color-text-secondary);}
-.pred-basis{font-size:11px;color:var(--color-text-tertiary);margin-top:5px;}
-.trend-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-top:6px;}
-.up{background:#EAF3DE;color:#3B6D11;} .dn{background:#FCEBEB;color:#A32D2D;} .fl{background:#F1EFE8;color:#5F5E5A;}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;}
-.legend span{display:flex;align-items:center;gap:4px;}
-.leg-sq{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+.pred-unit{font-size:12px;color:#888;}
+.pred-basis{font-size:11px;color:#aaa;margin-top:5px;}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-top:6px;}
+.up{background:#EAF3DE;color:#3B6D11;}
+.dn{background:#FCEBEB;color:#A32D2D;}
+.fl{background:#F1EFE8;color:#5F5E5A;}
 .heatmap-grid{display:grid;grid-template-columns:60px repeat(6,1fr);gap:3px;font-size:11px;}
-.hm-head{text-align:center;color:var(--color-text-secondary);padding:3px 0;font-size:10px;font-weight:500;}
-.hm-label{color:var(--color-text-secondary);display:flex;align-items:center;font-size:10px;}
+.hm-head{text-align:center;color:#888;padding:3px 0;font-size:10px;font-weight:500;}
+.hm-label{color:#888;display:flex;align-items:center;font-size:10px;}
 .hm-cell{border-radius:4px;padding:6px 2px;text-align:center;font-size:12px;font-weight:500;}
+.hist-controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:.75rem;font-size:12px;color:#888;}
+.hist-controls input{font-size:12px;padding:4px 8px;border:1px solid #ddd;border-radius:6px;margin-left:4px;background:#fff;color:#1a1a1a;}
+.hist-label{font-size:11px;color:#aaa;margin:.25rem 0 .35rem;}
 </style>
 </head>
 <body>
-<div style="display:flex;align-items:center;gap:12px;padding:.5rem 0 0;">
-  <img src="https://raw.githubusercontent.com/alangudiaachibriyani/HR/main/logo.png" alt="logo" style="height:50px;width:50px;border-radius:50%;object-fit:contain;flex-shrink:0;background:#fff;border:1px solid #eee;">
-  <div>
-    <div style="font-size:18px;font-weight:500;">Alangudi Aachi Biriyani</div>
-    <div style="font-size:12px;color:#888;">Production Dashboard</div>
+<div class="page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="https://raw.githubusercontent.com/alangudiaachibriyani/HR/main/logo.png" alt="logo">
+      <div>
+        <div class="title">Alangudi Aachi Biriyani</div>
+        <div class="subtitle" id="subtitle">Production Dashboard</div>
+      </div>
+    </div>
+    <button class="refresh-btn" onclick="init()">↻ Refresh</button>
   </div>
+  <div id="app"><p style="color:#888;padding:3rem 0;text-align:center;">⏳ Loading live data...</p></div>
 </div>
-<div class="wrap" id="app"></div>
+
 <script>
-
-
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbz_J4uu4K0641pG2Tm9WyJ7gDG3iYGfiD_v7xNbzGcDCKPNWj0co_-BDJqh0j7le5Nr/exec";
-const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-let data=[], charts={}, activeDay=2;
+const DAYS  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+let allData=[], charts={}, activeDay=2;
 
-async function fetchData(){
-  const res = await fetch(SHEET_URL);
-  const json = await res.json();
-  if(json.status !== "ok") throw new Error(json.message || "Sheet error");
-  data = json.data.map(r=>({
-    ...r,
-    date: new Date(r.date),
-    dow: new Date(r.date).getDay()
-  })).filter(r=>r.demand>0);
+function dk(d){ return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0'); }
+
+async function init(){
+  document.getElementById('app').innerHTML='<p style="color:#888;padding:3rem 0;text-align:center;">⏳ Loading live data...</p>';
+  try{
+    const res = await fetch(SHEET_URL);
+    const json = await res.json();
+    if(json.status!=='ok') throw new Error(json.message);
+    allData = json.data.map(r=>({
+      date: new Date(r.date),
+      session: r.session,
+      chicken: parseFloat(r.chicken)||0,
+      mutton:  parseFloat(r.mutton)||0,
+      demand:  Math.round(parseFloat(r.demand)||0),
+      dow:     new Date(r.date).getDay()
+    })).filter(r=>!isNaN(r.date)&&r.demand>0);
+    buildUI();
+  } catch(e){
+    document.getElementById('app').innerHTML=`<p style="color:#A32D2D;padding:2rem;text-align:center;">❌ ${e.message}</p>`;
+  }
 }
 
-function parseData(){ /* data loaded via fetchData() */ }
-
 function getLastN(dayIdx,session,n=10){
-  return data.filter(r=>r.dow===dayIdx&&r.session===session)
+  return allData.filter(r=>r.dow===dayIdx&&r.session===session)
     .sort((a,b)=>b.date-a.date).slice(0,n).reverse();
 }
 
-// Prediction: avg of last 4 same-weekday sessions, rounded to whole KG
 function predict(dayIdx,session){
-  const h=data.filter(r=>r.dow===dayIdx&&r.session===session)
+  const h=allData.filter(r=>r.dow===dayIdx&&r.session===session)
     .sort((a,b)=>b.date-a.date).slice(0,4);
   if(!h.length) return null;
-  const avg=h.reduce((s,r)=>s+r.demand,0)/h.length;
-  const pred=Math.round(avg);
+  const pred=Math.round(h.reduce((s,r)=>s+r.demand,0)/h.length);
   const trend=h.length>=2?(h[0].demand-h[h.length-1].demand):0;
   return{pred,count:h.length,trend,last4:h.map(r=>r.demand)};
 }
 
 function getKPIs(){
-  const sorted=[...data].sort((a,b)=>b.date-a.date);
+  const sorted=[...allData].sort((a,b)=>b.date-a.date);
   const latest=sorted[0]?.date;
   const latestDay=sorted.filter(r=>r.date.toDateString()===latest?.toDateString());
   const latestKg=latestDay.reduce((s,r)=>s+r.demand,0);
   const week7=new Date(latest); week7.setDate(week7.getDate()-7);
-  const wKg=data.filter(r=>r.date>=week7).reduce((s,r)=>s+r.demand,0);
-  const avgDem=data.reduce((s,r)=>s+r.demand,0)/data.length;
+  const wKg=allData.filter(r=>r.date>=week7).reduce((s,r)=>s+r.demand,0);
+  const avgDem=Math.round(allData.reduce((s,r)=>s+r.demand,0)/allData.length);
   const dateStr=latest?.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})||'—';
-  return{latestKg,wKg,avgDem:Math.round(avgDem),dateStr,total:data.length};
+  return{latestKg,wKg,avgDem,dateStr,total:allData.length};
 }
 
 function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
@@ -108,19 +125,17 @@ function renderTrendChart(canvasId,records){
   const ctx=document.getElementById(canvasId);
   if(!ctx) return;
   const labels=records.map(r=>r.date.toLocaleDateString('en-IN',{day:'numeric',month:'short'}));
-  const prodKg=records.map(r=>r.chicken+r.mutton);
-  const demKg=records.map(r=>r.demand);
   charts[canvasId]=new Chart(ctx,{
     type:'bar',
     data:{labels,datasets:[
-      {label:'Production KG',data:prodKg,backgroundColor:'rgba(55,138,221,0.75)',borderRadius:4},
-      {label:'Demand KG',data:demKg,backgroundColor:'rgba(29,158,117,0.75)',borderRadius:4}
+      {label:'Production KG',data:records.map(r=>r.chicken+r.mutton),backgroundColor:'rgba(55,138,221,0.75)',borderRadius:4},
+      {label:'Demand KG',data:records.map(r=>r.demand),backgroundColor:'rgba(29,158,117,0.75)',borderRadius:4}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,padding:8}}},
       scales:{
         x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{display:false}},
-        y:{ticks:{font:{size:10},callback:v=>v+'kg',stepSize:1},grid:{color:'rgba(128,128,128,0.08)'},min:0}
+        y:{ticks:{font:{size:10},callback:v=>v+'kg',stepSize:1},grid:{color:'rgba(0,0,0,0.05)'},min:0}
       }}
   });
 }
@@ -138,7 +153,7 @@ function renderDaySection(dayIdx){
     container.appendChild(box);
     setTimeout(()=>renderTrendChart(`tc-${dayIdx}-${i}`,records),0);
   });
-  if(!container.children.length) container.innerHTML='<p style="color:var(--color-text-secondary);font-size:13px;">No data for this day.</p>';
+  if(!container.children.length) container.innerHTML='<p style="color:#888;font-size:13px;">No data for this day.</p>';
 }
 
 function renderPredictions(){
@@ -149,22 +164,20 @@ function renderPredictions(){
   if(!container) return;
   container.innerHTML='';
   [[todayDow,'Today'],[tmrDow,'Tomorrow']].forEach(([dayIdx,label])=>{
-    if(dayIdx===1) return; // Monday closed
+    if(dayIdx===1) return;
     ['Lunch','Dinner'].forEach(sess=>{
       const p=predict(dayIdx,sess);
       if(!p) return;
       const tDir=p.trend>1?'↑ Higher recently':p.trend<-1?'↓ Lower recently':'→ Stable';
       const tCls=p.trend>1?'up':p.trend<-1?'dn':'fl';
-      const last4Str=p.last4.slice().reverse().join(', ')+'kg';
       const card=document.createElement('div');
       card.className='pred-card';
-      card.innerHTML=`
-        <div class="pred-day">${label} · ${DAYS[dayIdx]}</div>
+      card.innerHTML=`<div class="pred-day">${label} · ${DAYS[dayIdx]}</div>
         <div class="pred-session">${sess}</div>
         <div class="pred-val">${p.pred} KG</div>
         <div class="pred-unit">Prepare ${p.pred} KG</div>
-        <div class="pred-basis">Last ${p.count} sessions: ${last4Str}</div>
-        <span class="trend-badge ${tCls}">${tDir}</span>`;
+        <div class="pred-basis">Last ${p.count}: ${p.last4.slice().reverse().join(', ')}kg</div>
+        <span class="badge ${tCls}">${tDir}</span>`;
       container.appendChild(card);
     });
   });
@@ -177,31 +190,30 @@ function renderHeatmap(){
   const avgs={};
   let maxVal=0;
   dayIdxs.forEach(d=>['Lunch','Dinner'].forEach(s=>{
-    const h=data.filter(r=>r.dow===d&&r.session===s);
+    const h=allData.filter(r=>r.dow===d&&r.session===s);
     const avg=h.length?h.reduce((a,r)=>a+r.demand,0)/h.length:0;
     avgs[`${d}-${s}`]=Math.round(avg);
     if(avg>maxVal) maxVal=avg;
   }));
   const colors=['#E1F5EE','#9FE1CB','#5DCAA5','#1D9E75','#0F6E56'];
-  const txtColors=['#085041','#085041','#085041','#fff','#fff'];
-  function getColor(v){if(!v||!maxVal)return'var(--color-background-secondary)';return colors[Math.min(4,Math.floor((v/maxVal)*5))];}
-  function getTxtColor(v){if(!v||!maxVal)return'var(--color-text-tertiary)';return txtColors[Math.min(4,Math.floor((v/maxVal)*5))];}
-  let html='<div class="heatmap-grid">';
-  html+='<div class="hm-head"></div>';
-  dayIdxs.forEach(d=>{html+=`<div class="hm-head">${SHORT[d]}</div>`;});
+  const txts=['#085041','#085041','#085041','#fff','#fff'];
+  function gc(v){if(!v||!maxVal)return'#f0f0ee';return colors[Math.min(4,Math.floor((v/maxVal)*5))];}
+  function gt(v){if(!v||!maxVal)return'#aaa';return txts[Math.min(4,Math.floor((v/maxVal)*5))];}
+  let h='<div class="heatmap-grid"><div class="hm-head"></div>';
+  dayIdxs.forEach(d=>{h+=`<div class="hm-head">${SHORT[d]}</div>`;});
   ['Lunch','Dinner'].forEach(s=>{
-    html+=`<div class="hm-label">${s}</div>`;
+    h+=`<div class="hm-label">${s}</div>`;
     dayIdxs.forEach(d=>{
       const v=avgs[`${d}-${s}`]||0;
-      html+=`<div class="hm-cell" style="background:${getColor(v)};color:${getTxtColor(v)};">${v?v+'kg':'—'}</div>`;
+      h+=`<div class="hm-cell" style="background:${gc(v)};color:${gt(v)};">${v?v+'kg':'—'}</div>`;
     });
   });
-  html+='</div>';
-  container.innerHTML=html;
+  h+='</div>';
+  container.innerHTML=h;
 }
 
 function renderDayTabs(){
-  const activeDays=[...new Set(data.map(r=>r.dow))].filter(d=>d!==1).sort((a,b)=>a-b);
+  const activeDays=[...new Set(allData.map(r=>r.dow))].filter(d=>d!==1).sort((a,b)=>a-b);
   const el=document.getElementById('day-tabs');
   if(!el) return;
   el.innerHTML='';
@@ -219,46 +231,162 @@ function renderDayTabs(){
   });
 }
 
+// ───── Historic trend ─────
+let histDays=new Set(), histSess='Both';
+
+function chip(label,active,onclick){
+  const b=document.createElement('button');
+  b.className='day-tab'+(active?' active':'');
+  b.textContent=label;
+  b.onclick=onclick;
+  return b;
+}
+
+function initHistory(){
+  const dates=allData.map(r=>r.date).sort((a,b)=>a-b);
+  if(!dates.length) return;
+  const minD=dates[0], maxD=dates[dates.length-1];
+  const fmtD=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const availInfo=document.createElement('span');
+  availInfo.style.color='#aaa';
+  availInfo.textContent=`Data available: ${fmtD(minD)} – ${fmtD(maxD)}`;
+  document.querySelector('.hist-controls').appendChild(availInfo);
+  setRange(56,false);
+  buildHistChips();
+  renderHistory();
+}
+
+function setRange(days,render=true){
+  const dates=allData.map(r=>r.date).sort((a,b)=>a-b);
+  const minD=dates[0], maxD=dates[dates.length-1];
+  const from=new Date(maxD);
+  if(days) from.setDate(from.getDate()-days);
+  document.getElementById('h-from').value=dk(days&&from>minD?from:minD);
+  document.getElementById('h-to').value=dk(maxD);
+  if(render) renderHistory();
+}
+
+function buildHistChips(){
+  const r=document.getElementById('h-range');
+  r.innerHTML='';
+  [['Last 4 weeks',28],['Last 3 months',90],['Last 6 months',180],['All data',0]].forEach(([l,n])=>{
+    r.appendChild(chip(l,false,()=>setRange(n)));
+  });
+
+  const d=document.getElementById('h-days');
+  d.innerHTML='';
+  d.appendChild(chip('All',histDays.size===0,()=>{histDays.clear();buildHistChips();renderHistory();}));
+  [0,2,3,4,5,6].forEach(i=>{
+    d.appendChild(chip(SHORT[i],histDays.has(i),()=>{
+      if(histDays.has(i)) histDays.delete(i); else histDays.add(i);
+      buildHistChips();renderHistory();
+    }));
+  });
+
+  const s=document.getElementById('h-sess');
+  s.innerHTML='';
+  ['Both','Lunch','Dinner'].forEach(x=>{
+    s.appendChild(chip(x,histSess===x,()=>{histSess=x;buildHistChips();renderHistory();}));
+  });
+}
+
+function renderHistory(){
+  const f=document.getElementById('h-from').value, t=document.getElementById('h-to').value;
+  const box=document.getElementById('hist-charts');
+  if(!box||!f||!t) return;
+  destroyChart('hc-0'); destroyChart('hc-1');
+  const [fy,fm,fd]=f.split('-').map(Number), [ty,tm,td]=t.split('-').map(Number);
+  const from=new Date(fy,fm-1,fd), to=new Date(ty,tm-1,td,23,59,59);
+  if(from>to){ box.innerHTML='<p style="color:#A32D2D;font-size:13px;">"From" date is after "To" date.</p>'; return; }
+  const longSpan=(to-from)/86400000>300;
+  const sessions=histSess==='Both'?['Lunch','Dinner']:[histSess];
+  box.style.gridTemplateColumns=sessions.length===1?'1fr':'';
+  box.innerHTML='';
+
+  sessions.forEach((sess,i)=>{
+    const recs=allData.filter(r=>r.session===sess&&r.date>=from&&r.date<=to&&(histDays.size===0||histDays.has(r.dow)))
+      .sort((a,b)=>a.date-b.date);
+    const card=document.createElement('div');
+    card.className='chart-box';
+    if(!recs.length){
+      const allD=allData.map(r=>r.date).sort((a,b)=>a-b);
+      const fd2=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      card.innerHTML=`<div class="chart-box-title">${sess}</div><p style="color:#888;font-size:13px;">No ${sess} data in this selection. Your data runs from ${fd2(allD[0])} to ${fd2(allD[allD.length-1])}. Also check the Weekday filter is set to All.</p>`;
+      box.appendChild(card);
+      return;
+    }
+    const n=recs.length;
+    const avgD=Math.round(recs.reduce((s,r)=>s+r.demand,0)/n);
+    const avgP=Math.round(recs.reduce((s,r)=>s+r.chicken+r.mutton,0)/n);
+    const peak=Math.max(...recs.map(r=>r.demand));
+    card.innerHTML=`<div class="chart-box-title"><strong style="color:#1a1a1a;">${sess}</strong> · ${n} sessions · Avg demand ${avgD} KG · Avg production ${avgP} KG · Peak demand ${peak} KG</div><div class="chart-wrap" style="height:240px;"><canvas id="hc-${i}"></canvas></div>`;
+    box.appendChild(card);
+
+    const labels=recs.map(r=>[SHORT[r.dow],r.date.toLocaleDateString('en-IN',longSpan?{day:'numeric',month:'short',year:'2-digit'}:{day:'numeric',month:'short'})]);
+    const prod=recs.map(r=>r.chicken+r.mutton);
+    const dem=recs.map(r=>r.demand);
+    const asLine=n>24;
+    charts['hc-'+i]=new Chart(document.getElementById('hc-'+i),{
+      type:asLine?'line':'bar',
+      data:{labels,datasets:[
+        asLine
+          ?{label:'Production KG',data:prod,borderColor:'rgba(55,138,221,0.9)',backgroundColor:'rgba(55,138,221,0.9)',borderWidth:2,pointRadius:2,tension:.25}
+          :{label:'Production KG',data:prod,backgroundColor:'rgba(55,138,221,0.75)',borderRadius:4},
+        asLine
+          ?{label:'Demand KG',data:dem,borderColor:'rgba(29,158,117,0.9)',backgroundColor:'rgba(29,158,117,0.9)',borderWidth:2,pointRadius:2,tension:.25}
+          :{label:'Demand KG',data:dem,backgroundColor:'rgba(29,158,117,0.75)',borderRadius:4}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,padding:8}}},
+        scales:{
+          x:{ticks:{font:{size:9},maxRotation:asLine?60:45,autoSkip:asLine,maxTicksLimit:asLine?24:undefined},grid:{display:false}},
+          y:{ticks:{font:{size:10},callback:v=>v+'kg',stepSize:1},grid:{color:'rgba(0,0,0,0.05)'},min:0}
+        }}
+    });
+  });
+}
+
 function buildUI(){
   const k=getKPIs();
+  document.getElementById('subtitle').textContent=`Production Dashboard · Latest: ${k.dateStr} · ${k.total} sessions`;
   document.getElementById('app').innerHTML=`
-<div class="wrap">
-<div class="top-bar">
-  <div><div class="shop-name">🍛 Alangudi Aachi Biriyani</div><div class="shop-sub">Production Dashboard · Latest: ${k.dateStr} · ${k.total} sessions</div></div>
-</div>
-<div class="kpi-grid">
-  <div class="kpi"><div class="kpi-label">Latest day demand</div><div class="kpi-val">${k.latestKg} KG</div><div class="kpi-sub">${k.dateStr}</div></div>
-  <div class="kpi"><div class="kpi-label">Last 7 days demand</div><div class="kpi-val">${k.wKg} KG</div><div class="kpi-sub">rolling 7 days</div></div>
-  <div class="kpi"><div class="kpi-label">Avg demand / session</div><div class="kpi-val">${k.avgDem} KG</div><div class="kpi-sub">all time</div></div>
-</div>
-<div class="section">
-  <div class="sec-title">📦 Suggested preparation — today & tomorrow</div>
-  <div class="pred-grid" id="pred-grid"></div>
-</div>
-<div class="section">
-  <div class="sec-title">📈 Day-of-week trends · last 10 sessions</div>
-  <div class="day-tabs" id="day-tabs"></div>
-  <div class="chart-row" id="trend-charts"></div>
-</div>
-<div class="section">
-  <div class="sec-title">🗓 Avg demand heatmap (KG)</div>
-  <div id="heatmap-wrap"></div>
-</div>
-</div>`;
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Latest day demand</div><div class="kpi-val">${k.latestKg} KG</div><div class="kpi-sub">${k.dateStr}</div></div>
+      <div class="kpi"><div class="kpi-label">Last 7 days demand</div><div class="kpi-val">${k.wKg} KG</div><div class="kpi-sub">rolling 7 days</div></div>
+      <div class="kpi"><div class="kpi-label">Avg demand / session</div><div class="kpi-val">${k.avgDem} KG</div><div class="kpi-sub">all time</div></div>
+    </div>
+    <div class="section">
+      <div class="sec-title">📦 Suggested preparation — today & tomorrow</div>
+      <div class="pred-grid" id="pred-grid"></div>
+    </div>
+    <div class="section">
+      <div class="sec-title">📈 Day-of-week trends · last 10 sessions</div>
+      <div class="day-tabs" id="day-tabs"></div>
+      <div class="chart-row" id="trend-charts"></div>
+    </div>
+    <div class="section">
+      <div class="sec-title">🗓 Avg demand heatmap (KG)</div>
+      <div id="heatmap-wrap"></div>
+    </div>
+    <div class="section">
+      <div class="sec-title">🕘 Historic trend · pick dates, weekdays & session</div>
+      <div class="hist-controls">
+        <label>From <input type="date" id="h-from" onchange="renderHistory()"></label>
+        <label>To <input type="date" id="h-to" onchange="renderHistory()"></label>
+      </div>
+      <div class="day-tabs" id="h-range"></div>
+      <div class="hist-label">Weekday</div>
+      <div class="day-tabs" id="h-days"></div>
+      <div class="hist-label">Session</div>
+      <div class="day-tabs" id="h-sess"></div>
+      <div class="chart-row" id="hist-charts"></div>
+    </div>`;
   renderDayTabs();
   renderDaySection(activeDay);
   renderPredictions();
   renderHeatmap();
-}
-
-async function init(){
-  document.getElementById('app').innerHTML=`<div style="padding:3rem;text-align:center;color:var(--color-text-secondary);font-size:14px;">⏳ Loading live data from sheet...</div>`;
-  try{
-    await fetchData();
-    buildUI();
-  } catch(err){
-    document.getElementById('app').innerHTML=`<div style="padding:2rem;text-align:center;color:#A32D2D;font-size:13px;">❌ Could not load sheet data.<br><small>${err.message}</small></div>`;
-  }
+  initHistory();
 }
 
 init();
